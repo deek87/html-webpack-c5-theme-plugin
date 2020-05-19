@@ -275,6 +275,7 @@ export default class HtmlWebpackC5ThemePlugin {
     if (name === defaultPage) {
       name = "default";
     }
+    name = name.toLowerCase();
 
     const eleSource = { source: () => content, size: () => content.length };
     // @ts-ignore
@@ -356,6 +357,7 @@ export default class HtmlWebpackC5ThemePlugin {
             if (this._options.deleteHtml) {
               const asset = compilation.assets[data.outputName];
               delete compilation.assets[data.outputName];
+              data.outputName = data.outputName.toLowerCase();
               if (this._options.defaultPage !== data.outputName) {
                 data.outputName = data.outputName.replace(".html", ".php");
               } else {
@@ -369,7 +371,6 @@ export default class HtmlWebpackC5ThemePlugin {
                 compilation.assets[data.outputName] = asset;
               }
             }
-            console.log(compilation.assets);
             cb(undefined, data);
           });
         } else {
