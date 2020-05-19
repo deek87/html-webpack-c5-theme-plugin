@@ -61,10 +61,10 @@ describe("Testing Output", () => {
       },
       (err) => {
         expect(!!err).to.be.false;
-        const indexContent = getContent("default.php");
-        const pageThemeContent = getContent("page_theme.php");
-        const headerElementContent = getContent("elements/header.php");
-        const footerElementContent = getContent("elements/footer.php");
+        const indexContent = getContent("./default.php");
+        const pageThemeContent = getContent("./page_theme.php");
+        const headerElementContent = getContent("./elements/header.php");
+        const footerElementContent = getContent("./elements/footer.php");
         expect(
           /<!--\s*\-*C5 (?:Begin|end)/i.test(indexContent),
           "found remaining element tag in index"
