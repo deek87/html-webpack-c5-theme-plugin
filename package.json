@@ -1,8 +1,12 @@
 {
   "name": "html-webpack-c5-theme-plugin",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "c5 html-webpack-plugin to generate c5 theme files",
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com:deek87/html-webpack-c5-theme-plugin"
+  },
   "scripts": {
     "test": "cross-env TS_NODE_CACHE=false mocha -r ts-node/register __tests__/**/*.test.ts --exit",
     "build": "eslint src/**/*.ts --fix && tsc",

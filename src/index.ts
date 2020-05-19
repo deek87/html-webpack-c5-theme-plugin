@@ -34,7 +34,7 @@ export interface C5Area {
   end?: number;
 }
 
-export default class HtmlWebpackC5ThemePlugin {
+export class HtmlWebpackC5ThemePlugin {
   private hasAreaTag = false;
   private hasElement = false;
   private elements: C5Element[] = [];
@@ -398,3 +398,5 @@ export default class HtmlWebpackC5ThemePlugin {
     }
   }
 }
+
+export default HtmlWebpackC5ThemePlugin;
