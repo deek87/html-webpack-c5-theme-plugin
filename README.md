@@ -1,5 +1,7 @@
 # Html-Webpack-C5-Theme-Plugin
 
+![Tests](https://github.com/deek87/html-webpack-c5-theme-plugin/workflows/Tests/badge.svg?branch=master) ![Build](https://github.com/deek87/html-webpack-c5-theme-plugin/workflows/Build/badge.svg?branch=master)
+
 ## Installation
 
 To install first run
