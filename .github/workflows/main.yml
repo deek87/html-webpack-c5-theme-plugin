@@ -5,51 +5,49 @@ name: Build and Test
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [10.x, 12.x, 13.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install webpack and html-webpack-plugin
-      run: npm install webpack html-webpack-plugin --save-dev
-    - name: Lint Typescript files
-      run: npm run lint
-    - name: Build Output
-      run: npm run build
-      env:
-        CI: true
-        
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install webpack and html-webpack-plugin
+        run: npm install webpack html-webpack-plugin --save-dev
+      - name: Lint Typescript files
+        run: npm run lint
+      - name: Build Output
+        run: npm run build
+        env:
+          CI: true
+
   test:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [10.x, 12.x, 13.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install webpack and html-webpack-plugin
-      run: npm install webpack html-webpack-plugin --save-dev
-    - name: Run  Tests
-      run: npm run test
-      env:
-        CI: true
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install webpack and html-webpack-plugin
+        run: npm install webpack html-webpack-plugin --save-dev
+      - name: Run  Tests
+        run: npm run test
+        env:
+          CI: true
