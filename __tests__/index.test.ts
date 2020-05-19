@@ -2,7 +2,7 @@
 import webpack from "webpack";
 import { join } from "path";
 import { expect } from "chai";
-import { readFileSync } from "fs";
+import { readFileSync, readdirSync } from "fs";
 import "mocha";
 import HtmlWebpackC5ThemePlugin, { C5PluginConfig } from "../src/index";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -61,6 +61,8 @@ describe("Testing Output", () => {
       },
       (err) => {
         expect(!!err).to.be.false;
+        console.log(readdirSync(outputDir));
+        console.log(readdirSync(join(outputDir, "./elements")));
         const indexContent = getContent("./default.php");
         const pageThemeContent = getContent("./page_theme.php");
         const headerElementContent = getContent("./elements/header.php");

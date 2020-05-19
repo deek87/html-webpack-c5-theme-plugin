@@ -369,6 +369,7 @@ export default class HtmlWebpackC5ThemePlugin {
                 compilation.assets[data.outputName] = asset;
               }
             }
+            console.log(compilation.assets);
             cb(undefined, data);
           });
         } else {
