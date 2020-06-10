@@ -13,6 +13,7 @@ export interface C5Element {
   startPos: number;
   endPos: number;
   endCom: number;
+  files: string[];
 }
 
 export interface C5PluginConfig {
@@ -126,14 +127,14 @@ export class HtmlWebpackC5ThemePlugin {
     );
   }
 
-  getElements(document: any): boolean {
+  getElements(document: any, filename: string): boolean {
     if (document.childNodes && document.childNodes.length) {
       document.childNodes.forEach((childNode: any) => {
         if (this.isElement(childNode)) {
           this.hasElement = true;
-          this.getElement(childNode);
+          this.getElement(childNode, filename);
         } else {
-          return this.getElements(childNode);
+          return this.getElements(childNode, filename);
         }
       });
       return true;
@@ -142,7 +143,7 @@ export class HtmlWebpackC5ThemePlugin {
     }
   }
 
-  getElement(comment: parse5.DefaultTreeCommentNode) {
+  getElement(comment: parse5.DefaultTreeCommentNode, filename: string) {
     let element: C5Element;
     const regEx = /^-*C5\s+Begin\s+(.*)-*$/iu;
     if (regEx.test(comment.data)) {
@@ -160,6 +161,7 @@ export class HtmlWebpackC5ThemePlugin {
             : 0,
           endCom: 0,
           endPos: 0,
+          files: [filename],
         };
         this.elements.push(element);
       }
@@ -183,8 +185,10 @@ export class HtmlWebpackC5ThemePlugin {
           element.endPos = comment.sourceCodeLocation
             ? comment.sourceCodeLocation.startOffset
             : 0;
-
           this.elements = this.elements.filter((ele) => {
+            if (ele.name === element.name && !ele.files.includes(filename)) {
+              element.files = [...ele.files, filename];
+            }
             return ele.name !== element.name;
           });
           this.elements.push(element);
@@ -309,16 +313,19 @@ export class HtmlWebpackC5ThemePlugin {
                   this.getElements(
                     parse5.parseFragment(data.html, {
                       sourceCodeLocationInfo: true,
-                    })
+                    }),
+                    data.outputName
                   )
                 ) {
                   this.elements.forEach((ele) => {
-                    this.getElementHtml(ele, data.html);
-                    this.outputC5Theme(
-                      this.getConcrete5Output(ele.content),
-                      ele.filename,
-                      compilation
-                    );
+                    if (ele.files.includes(data.outputName)) {
+                      this.getElementHtml(ele, data.html);
+                      this.outputC5Theme(
+                        this.getConcrete5Output(ele.content),
+                        ele.filename,
+                        compilation
+                      );
+                    }
                   });
                 }
                 if (!this.generatedTheme) {
@@ -326,6 +333,7 @@ export class HtmlWebpackC5ThemePlugin {
                 }
                 html = this.removeElements(data.html);
                 if (this._options.deleteHtml) {
+                  html = this.getConcrete5Output(html);
                   let start = "<?php\n";
                   start += "defined('C5_EXECUTE') or die('Access Denied.');\n";
                   start += "/* @var \\Concrete\\View\\View $view */\n";
