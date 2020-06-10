@@ -9,9 +9,6 @@
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
   },
-  "paths": {
-    "parse5": ["parse5/v4"]
-  },
   "include": ["src"],
   "exclude": ["node_modules", "**/__tests__/*"]
 }

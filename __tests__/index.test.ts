@@ -238,7 +238,7 @@ describe("Testing Input", () => {
             "couldn't find matching page theme name"
           ).to.be.true;
           expect(
-            /namespace Application\\Themes\\C5Theme;/i.test(pageThemeContent),
+            /namespace Application\\Theme\\C5Theme;/i.test(pageThemeContent),
             "generated incorrect namespace"
           ).to.be.true;
           done(err);
@@ -264,7 +264,7 @@ describe("Testing Input", () => {
             "couldn't find matching page theme name"
           ).to.be.true;
           expect(
-            /namespace Application\\Themes\\CoolC5Theme;/i.test(
+            /namespace Application\\Theme\\CoolC5Theme;/i.test(
               pageThemeContent
             ),
             "generated incorrect namespace"
@@ -292,7 +292,7 @@ describe("Testing Input", () => {
             "couldn't find matching page theme name"
           ).to.be.true;
           expect(
-            /namespace Concrete\\Core\\Package\\CoolPackage\\Themes\\C5Theme;/i.test(
+            /namespace Concrete\\Core\\Package\\CoolPackage\\Theme\\C5Theme;/i.test(
               pageThemeContent
             ),
             "generated incorrect namespace"
