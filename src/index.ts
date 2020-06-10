@@ -52,7 +52,6 @@ export class HtmlWebpackC5ThemePlugin {
     if (!_htmlPlugin) {
       this._htmlPlugin = HtmlWebpackPlugin;
     }
-
     if (typeof _options === "string") {
       this._options.themeHandle = _options.replace(/\s/gi, "_");
       this._options.themeName = _options;
@@ -268,17 +267,17 @@ export class HtmlWebpackC5ThemePlugin {
   }
 
   outputC5Theme(content: string, name: string, compilation: any) {
+    const defaultPage: string = this._options.defaultPage
+      ? this._options.defaultPage
+      : "index.html";
+    if (name.toLowerCase() === defaultPage.toLowerCase()) {
+      this.outputC5Theme(content, "default", compilation);
+    }
     let start = "<?php\n";
     start += "defined('C5_EXECUTE') or die('Access Denied.');\n";
     start += "/* @var \\Concrete\\Core\\Page\\View\\PageView  $view */\n";
     start += "$c = \\Concrete\\Core\\Page\\Page::getCurrentPage();?>\n";
     content = start + content;
-    const defaultPage: string = this._options.defaultPage
-      ? this._options.defaultPage
-      : "index.html";
-    if (name === defaultPage) {
-      name = "default";
-    }
     name = name.toLowerCase();
 
     const eleSource = { source: () => content, size: () => content.length };
@@ -338,7 +337,7 @@ export class HtmlWebpackC5ThemePlugin {
                 } else {
                   html = data.html;
                 }
-                if (this._options.deleteHtml) {
+                if (this._options.deleteHtml === true) {
                   html = this.getConcrete5Output(html);
                   let start = "<?php\n";
                   start += "defined('C5_EXECUTE') or die('Access Denied.');\n";
@@ -346,7 +345,10 @@ export class HtmlWebpackC5ThemePlugin {
                     "/* @var \\Concrete\\Core\\Page\\View\\PageView $view */\n";
                   start +=
                     "$c = \\Concrete\\Core\\Page\\Page::getCurrentPage();?>\n";
-                  if (this._options.defaultPage !== data.outputName) {
+                  if (
+                    this._options.defaultPage.toLowerCase() !==
+                    data.outputName.toLowerCase()
+                  ) {
                     data.outputName = data.outputName.replace(".html", ".php");
                   } else {
                     data.outputName = "default.php";
@@ -374,12 +376,15 @@ export class HtmlWebpackC5ThemePlugin {
               this._options.skipIndex
             ) {
               delete compilation.assets[data.outputName];
-            } else if (this._options.deleteHtml) {
+            } else if (this._options.deleteHtml === true) {
               const asset = compilation.assets[data.outputName];
               let isDefault = false;
               delete compilation.assets[data.outputName];
               data.outputName = data.outputName.toLowerCase();
-              if (this._options.defaultPage !== data.outputName) {
+              if (
+                this._options.defaultPage.toLowerCase() ===
+                data.outputName.toLowerCase()
+              ) {
                 isDefault = true;
               }
 
