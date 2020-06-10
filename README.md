@@ -88,7 +88,7 @@ The element file would contain the following
 ```php
 <?php
 defined('C5_EXECUTE') or die('Access Denied.');
-/* @var \Concrete\View\View $view */
+/* @var \Concrete\Core\Page\View\PageView $view */
 $c = \Concrete\Core\Page\Page::getCurrentPage();?>
 <div class="sm-12 md-10">
         <?php
@@ -103,7 +103,7 @@ The main html file will be outputted like this
 ```php
 ...
 <div class="container">
-    <?php $view->include('elements/element_name');?>
+    <?php $view->inc('elements/element_name');?>
 </div>
 ...
 ```

@@ -270,7 +270,7 @@ export class HtmlWebpackC5ThemePlugin {
   outputC5Theme(content: string, name: string, compilation: any) {
     let start = "<?php\n";
     start += "defined('C5_EXECUTE') or die('Access Denied.');\n";
-    start += "/* @var \\Concrete\\View\\View $view */\n";
+    start += "/* @var \\Concrete\\Core\\Page\\View\\PageView  $view */\n";
     start += "$c = \\Concrete\\Core\\Page\\Page::getCurrentPage();?>\n";
     content = start + content;
     const defaultPage: string = this._options.defaultPage
@@ -303,8 +303,8 @@ export class HtmlWebpackC5ThemePlugin {
           hooks.beforeEmit.tapAsync(pluginName, (data, cb) => {
             let fileHasEles = false;
             if (
-              this._options.skipIndex === true &&
-              data.outputName === "index.html"
+              this._options.skipIndex &&
+              data.outputName.toLowerCase() === "index.html"
             ) {
               cb(undefined, data);
             } else {
@@ -342,7 +342,8 @@ export class HtmlWebpackC5ThemePlugin {
                   html = this.getConcrete5Output(html);
                   let start = "<?php\n";
                   start += "defined('C5_EXECUTE') or die('Access Denied.');\n";
-                  start += "/* @var \\Concrete\\View\\View $view */\n";
+                  start +=
+                    "/* @var \\Concrete\\Core\\Page\\View\\PageView $view */\n";
                   start +=
                     "$c = \\Concrete\\Core\\Page\\Page::getCurrentPage();?>\n";
                   if (this._options.defaultPage !== data.outputName) {
@@ -402,7 +403,7 @@ export class HtmlWebpackC5ThemePlugin {
     if (this.hasElement) {
       this.elements.forEach((ele) => {
         newHtml += html.substring(prevPos, ele.startCom);
-        newHtml += "<?php $view->include('" + ele.filename + ".php'); ?>";
+        newHtml += "<?php $view->inc('" + ele.filename + ".php'); ?>";
         prevPos = ele.endCom;
       });
       newHtml += html.substring(prevPos, html.length);
