@@ -369,20 +369,33 @@ export class HtmlWebpackC5ThemePlugin {
           });
 
           hooks.afterEmit.tapAsync(pluginName, (data, cb) => {
-            if (this._options.deleteHtml) {
+            if (
+              data.outputName.toLowerCase() === "index.html" &&
+              this._options.skipIndex
+            ) {
+              delete compilation.assets[data.outputName];
+            } else if (this._options.deleteHtml) {
               const asset = compilation.assets[data.outputName];
+              let isDefault = false;
               delete compilation.assets[data.outputName];
               data.outputName = data.outputName.toLowerCase();
               if (this._options.defaultPage !== data.outputName) {
-                data.outputName = data.outputName.replace(".html", ".php");
-              } else {
-                data.outputName = "default.php";
+                isDefault = true;
               }
+
+              data.outputName = data.outputName.replace(".html", ".php");
               // @ts-ignore
               if (compilation.emitAsset) {
                 // @ts-ignore
                 compilation.emitAsset(data.outputName, asset);
+                if (isDefault) {
+                  // @ts-ignore
+                  compilation.emitAsset("default.php", asset);
+                }
               } else {
+                if (isDefault) {
+                  compilation.assets["default.php"] = asset;
+                }
                 compilation.assets[data.outputName] = asset;
               }
             }
