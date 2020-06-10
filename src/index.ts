@@ -301,6 +301,7 @@ export class HtmlWebpackC5ThemePlugin {
           );
 
           hooks.beforeEmit.tapAsync(pluginName, (data, cb) => {
+            let fileHasEles = false;
             if (
               this._options.skipIndex === true &&
               data.outputName === "index.html"
@@ -319,6 +320,7 @@ export class HtmlWebpackC5ThemePlugin {
                 ) {
                   this.elements.forEach((ele) => {
                     if (ele.files.includes(data.outputName)) {
+                      fileHasEles = true;
                       this.getElementHtml(ele, data.html);
                       this.outputC5Theme(
                         this.getConcrete5Output(ele.content),
@@ -331,7 +333,11 @@ export class HtmlWebpackC5ThemePlugin {
                 if (!this.generatedTheme) {
                   this.generateThemeFile(compilation);
                 }
-                html = this.removeElements(data.html);
+                if (fileHasEles) {
+                  html = this.removeElements(data.html);
+                } else {
+                  html = data.html;
+                }
                 if (this._options.deleteHtml) {
                   html = this.getConcrete5Output(html);
                   let start = "<?php\n";
