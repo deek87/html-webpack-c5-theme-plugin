@@ -1,6 +1,6 @@
 {
   "name": "html-webpack-c5-theme-plugin",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "c5 html-webpack-plugin to generate c5 theme files",
   "main": "dist/index.js",
   "repository": {
