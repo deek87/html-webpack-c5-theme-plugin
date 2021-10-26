@@ -108,7 +108,7 @@ describe("Testing Output", () => {
       },
       (err, stats) => {
         expect(!!err, "Webpack has an error").to.be.false;
-        expect(stats.hasErrors(), "The plugin has an error").to.be.false;
+        expect(stats?.hasErrors(), "The plugin has an error").to.be.false;
         const index2Content = getContent("default.php");
         const indexContent = getContent("index.php");
         const pageThemeContent = getContent("page_theme.php");
@@ -156,13 +156,16 @@ describe("Testing Output", () => {
         ],
       },
       (err, stats) => {
+        const errors: webpack.StatsError[] = stats?.toJson().errors || [];
         expect(!!err, "Webpack has an error").to.be.false;
-        expect(stats.hasErrors(), "Plugin did not error").to.be.true;
-        expect(stats.toJson().errors).to.contains(
-          "Invalid Area - Missing Name Tag",
-          "Couldnt find error"
-        );
-        done(err);
+        expect(stats?.hasErrors(), "Plugin did not error").to.be.true;
+        if (errors && errors.length > 0) {
+          expect(errors[0]?.message).to.contains(
+            "Invalid Area - Missing Name Tag",
+            "Couldnt find error"
+          );
+        }
+        done();
       }
     );
   });
@@ -180,11 +183,14 @@ describe("Testing Output", () => {
       },
       (err, stats) => {
         expect(!!err, "Webpack has an error").to.be.false;
-        expect(stats.hasErrors()).to.be.true;
-        expect(stats.toJson().errors).to.contains(
-          "Invalid Element - No Start Tag : Header",
-          "Didnt get an error"
-        );
+        const errors: webpack.StatsError[] = stats?.toJson().errors || [];
+        expect(stats?.hasErrors()).to.be.true;
+        if (errors && errors.length > 0) {
+          expect(errors[0].message).to.contains(
+            "Invalid Element - No Start Tag : Header",
+            "Didnt get an error"
+          );
+        }
         done(err);
       }
     );
@@ -202,12 +208,15 @@ describe("Testing Output", () => {
         ],
       },
       (err, stats) => {
+        const errors: webpack.StatsError[] = stats?.toJson().errors || [];
         expect(!!err, "Webpack has an error").to.be.false;
-        expect(stats.hasErrors()).to.be.true;
-        expect(stats.toJson().errors).to.contains(
-          "Invalid Element - No End Tag : Header",
-          "Didnt get an error"
-        );
+        expect(stats?.hasErrors()).to.be.true;
+        if (errors && errors.length > 0) {
+          expect(errors[0].message).to.contains(
+            "Invalid Element - No End Tag : Header",
+            "Didnt get an error"
+          );
+        }
         done(err);
       }
     );
@@ -232,7 +241,7 @@ describe("Testing Input", () => {
         (err, stats) => {
           const pageThemeContent = getContent("page_theme.php");
           expect(!!err, "Webpack has an error").to.be.false;
-          expect(stats.hasErrors(), "The plugin has an error").to.be.false;
+          expect(stats?.hasErrors(), "The plugin has an error").to.be.false;
           expect(
             /return t\('Concrete5 Theme'\)/i.test(pageThemeContent),
             "couldn't find matching page theme name"
@@ -258,7 +267,7 @@ describe("Testing Input", () => {
         (err, stats) => {
           const pageThemeContent = getContent("page_theme.php");
           expect(!!err, "Webpack has an error").to.be.false;
-          expect(stats.hasErrors(), "The plugin has an error").to.be.false;
+          expect(stats?.hasErrors(), "The plugin has an error").to.be.false;
           expect(
             /return t\('Cool C5 Theme'\)/i.test(pageThemeContent),
             "couldn't find matching page theme name"
@@ -286,7 +295,7 @@ describe("Testing Input", () => {
         (err, stats) => {
           const pageThemeContent = getContent("page_theme.php");
           expect(!!err, "Webpack has an error").to.be.false;
-          expect(stats.hasErrors(), "The plugin has an error").to.be.false;
+          expect(stats?.hasErrors(), "The plugin has an error").to.be.false;
           expect(
             /return t\('Concrete5 Theme'\)/i.test(pageThemeContent),
             "couldn't find matching page theme name"
@@ -320,7 +329,7 @@ describe("Testing Input", () => {
         (err, stats) => {
           const pageThemeContent = getContent("page_theme.php");
           expect(!!err, "Webpack has an error").to.be.false;
-          expect(stats.hasErrors(), "The plugin has an error").to.be.false;
+          expect(stats?.hasErrors(), "The plugin has an error").to.be.false;
           expect(
             /return t\('My C5 Theme'\)/i.test(pageThemeContent),
             "couldn't find matching page theme name"
@@ -346,7 +355,7 @@ describe("Testing Input", () => {
         },
         (err, stats) => {
           expect(!!err, "Webpack has an error").to.be.false;
-          expect(stats.hasErrors(), "The plugin has an error").to.be.false;
+          expect(stats?.hasErrors(), "The plugin has an error").to.be.false;
           expect(() => {
             readFileSync(join(outputDir, "page_theme.php"));
           }, "file was found").to.throw();
@@ -372,7 +381,7 @@ describe("Testing Input", () => {
         (err, stats) => {
           const pageThemeContent = getContent("page_theme.php");
           expect(!!err, "Webpack has an error").to.be.false;
-          expect(stats.hasErrors(), "The plugin has an error").to.be.false;
+          expect(stats?.hasErrors(), "The plugin has an error").to.be.false;
           expect(
             /return t\('My C5 Theme'\)/i.test(pageThemeContent),
             "couldn't find matching page theme name"

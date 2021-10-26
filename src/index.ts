@@ -61,7 +61,7 @@ export class HtmlWebpackC5ThemePlugin {
   }
 
   getConcrete5Output(html: string): string {
-    const document = <parse5.DefaultTreeDocumentFragment>(
+    const document = <parse5.DocumentFragment>(
       parse5.parseFragment(html, { sourceCodeLocationInfo: true })
     );
 
@@ -119,7 +119,7 @@ export class HtmlWebpackC5ThemePlugin {
     return true;
   }
 
-  isElement(comment: parse5.DefaultTreeCommentNode) {
+  isElement(comment: parse5.CommentNode) {
     return (
       comment.nodeName === "#comment" &&
       comment.data.match(/^-*C5\s(?:Begin|End)/giu)
@@ -142,7 +142,7 @@ export class HtmlWebpackC5ThemePlugin {
     }
   }
 
-  getElement(comment: parse5.DefaultTreeCommentNode, filename: string) {
+  getElement(comment: parse5.CommentNode, filename: string) {
     let element: C5Element;
     const regEx = /^-*C5\s+Begin\s+(.*)-*$/iu;
     if (regEx.test(comment.data)) {
@@ -196,7 +196,7 @@ export class HtmlWebpackC5ThemePlugin {
     }
   }
 
-  isArea(area: parse5.DefaultTreeNode): boolean {
+  isArea(area: parse5.Node): boolean {
     return area.nodeName === "c5-area";
   }
 
@@ -213,7 +213,7 @@ export class HtmlWebpackC5ThemePlugin {
     );
   }
 
-  getC5Area(area: parse5.DefaultTreeElement) {
+  getC5Area(area: parse5.Element) {
     const c5area = {
       name: "",
       global: false,
@@ -364,7 +364,7 @@ export class HtmlWebpackC5ThemePlugin {
                 }
                 cb(undefined, data);
               } catch (err) {
-                compilation.errors.push(err);
+                compilation.errors.push(err as webpack.WebpackError);
                 cb(undefined, data);
               }
             }
