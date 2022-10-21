@@ -1,6 +1,6 @@
 {
   "name": "html-webpack-c5-theme-plugin",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "c5 html-webpack-plugin to generate c5 theme files",
   "main": "dist/index.js",
   "repository": {
@@ -20,7 +20,11 @@
     "webpack",
     "theme",
     "concrete5 theme",
-    "c5 theme"
+    "c5 theme",
+    "concrete",
+    "concretecms",
+    "cms theme",
+    "concrete theme"
   ],
   "author": "Derek Cameron <info@derekcameron.com>",
   "license": "MIT",
